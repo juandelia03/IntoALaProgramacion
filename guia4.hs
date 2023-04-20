@@ -142,7 +142,7 @@ sonCoprimos2 n m = mcd n m == 1
 
 
 sonCoprimos :: Integer ->Integer ->Bool --no se si esta bien
-sonCoprimos n m | n == 0 || m == 0 = True
+sonCoprimos n m | n == 0 || m == 0 = False
                 | n == 1 || m == 1 = True
                 | esMultiplo n m || esMultiplo m n = False
                 | otherwise = sonCoprimos n (m `div` (menorDivisor m))
