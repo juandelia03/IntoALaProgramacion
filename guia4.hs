@@ -133,11 +133,19 @@ esPrimo n | n<= 1 = False
 --c
 esMultiplo n m = n `mod` m == 0 
 
+mcd :: Integer -> Integer ->  Integer
+mcd a b | abs b > abs a = mcd b a
+mcd a 0 = abs a
+mcd a b = mcd b (mod a b)
+
+sonCoprimos2 n m = mcd n m == 1 
+
+
 sonCoprimos :: Integer ->Integer ->Bool --no se si esta bien
 sonCoprimos n m | n == 0 || m == 0 = True
                 | n == 1 || m == 1 = True
                 | esMultiplo n m || esMultiplo m n = False
-                | otherwise = sonCoprimos n (m-(menorDivisor m))
+                | otherwise = sonCoprimos n (m `div` (menorDivisor m))
 
 --d
 nEsimoPrimoAux :: Integer ->Integer -> Integer ->Integer
