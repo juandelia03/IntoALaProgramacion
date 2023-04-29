@@ -5,6 +5,7 @@ esMultiploDe :: Integer -> Integer -> Bool
 esMultiploDe x y | (x `mod` y) == 0 = True
                  | otherwise = False
 
+
 --Ejercicio 1
 --1.1
 longitud :: [t] -> Integer
@@ -150,4 +151,81 @@ ordenar xs = ordenarAux xs []
 ordenarAux :: [Integer] -> [Integer] -> [Integer]
 ordenarAux [] ys = ys
 ordenarAux xs ys = ordenarAux  (quitar (maximo xs) xs) (maximo xs:ys)
+
+--Ejercicio 4
+
+--1
+empiezaConBlanco (x:xs) = (x == ' ')
+
+sacarBlancosRepetidosAux :: [Char] -> [Char] -> Char -> [Char]
+sacarBlancosRepetidosAux [] ys a = reverso ys
+sacarBlancosRepetidosAux (x:xs) ys  a | a == ' ' && x == ' ' =
+                                       sacarBlancosRepetidosAux xs ys x
+                                      | otherwise = sacarBlancosRepetidosAux xs (x:ys) x
+
+sacarBlancosRepetidos :: [Char] -> [Char]
+sacarBlancosRepetidos xs | empiezaConBlanco xs = sacarBlancosRepetidosAux xs [' '] ' '
+                         | otherwise = sacarBlancosRepetidosAux xs [] ' '
+
+--2
+
+sinUltimo :: [t] -> [t]
+sinUltimo xs = reverso (tail (reverso xs))
+
+sacarBlancosRepetidosYDeLasPuntas :: [Char] -> [Char] 
+sacarBlancosRepetidosYDeLasPuntas xs = sacarBlancosRepetidosYDeLasPuntasAux (sacarBlancosRepetidos xs)
+
+sacarBlancosRepetidosYDeLasPuntasAux :: [Char] -> [Char]
+sacarBlancosRepetidosYDeLasPuntasAux " " = ""
+sacarBlancosRepetidosYDeLasPuntasAux (x:xs) | x == ' ' && ultimo xs == ' ' = sinUltimo xs
+                                            | x == ' ' = xs
+                                            | ultimo xs == ' ' = sinUltimo (x:xs)
+                                            | otherwise = (x:xs)
+
+contarBlancos:: [Char] -> Integer
+contarBlancos xs = contarBlancosAux (sacarBlancosRepetidosYDeLasPuntas xs)
+
+contarBlancosAux:: [Char] -> Integer
+contarBlancosAux [] = 0
+contarBlancosAux (x:xs) | x == ' ' = contarBlancosAux xs + 1
+                        | otherwise = contarBlancosAux xs
+
+todosBlancos :: [Char] -> Bool
+todosBlancos xs = todosIguales xs && pertenece ' ' xs
+
+contarPalabras :: [Char] -> Integer
+contarPalabras xs | todosBlancos xs = 0
+                  |  otherwise = contarBlancos xs + 1
+
+--4
+palabras :: [Char] -> [[Char]]
+palabras xs = palabrasAux (sacarBlancosRepetidosYDeLasPuntas xs) [] []  (contarPalabras xs)
+
+
+palabrasAux [] ys rs k = reverso ((reverso ys):rs)
+palabrasAux (x:xs) ys rs  k  | longitud rs == k = rs
+                             | x == ' ' = palabrasAux xs [] ((reverso ys):rs) (k+1) 
+                             | otherwise = palabrasAux xs (x:ys) rs k
+
+--3
+palabraMasLargaAux [] p = p
+palabraMasLargaAux (x:xs) p | longitud x >= longitud p = palabraMasLargaAux xs x
+                            | otherwise = palabraMasLargaAux xs p
+
+palabraMasLarga :: [Char] -> [Char]
+palabraMasLarga xs = palabraMasLargaAux (palabras xs) []
+
+--5
+aplanarAux :: [[Char]] ->[Char] -> [Char]
+aplanarAux [] ys= ys
+aplanarAux (x:xs) ys = x++ys ++ (aplanarAux xs ys)
+
+aplanar :: [[Char]] -> [Char]
+aplanar xs = aplanarAux xs []
+
+--6
+aplanarConBlancosAux [] ys=  ys
+aplanarConBlancosAux (x:xs) ys = (reverso ((' '):(reverso (x))))++ys ++ (aplanarConBlancosAux xs ys)
+
+aplanarConBlancos xs = sinUltimo (aplanarConBlancosAux xs [])
 
