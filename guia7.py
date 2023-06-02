@@ -1,7 +1,7 @@
 import math
 # ej 1
 #1
-def raizDe2() -> float:
+def raizDe2():
     print(round(math.sqrt(2),2))
 
 #2
@@ -15,7 +15,7 @@ def factorial_5() -> int:
 
 #ej 2
 
-def saludo(nombre) -> str:
+def saludo(nombre):
     print("hola" + nombre)
 
 def imprimir_dos_veces(estribillo):
