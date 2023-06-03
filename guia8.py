@@ -157,6 +157,8 @@ def siete_y_medio() -> list:
     posibles: list = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12]
     eleccion: str = ""
     contador: float = random.choice(posibles)
+    if contador > 9:
+        contador = 0.5
     cartas: list = [contador]
     while eleccion != "plantarse":
         if contador > 7.5:
@@ -171,6 +173,9 @@ def siete_y_medio() -> list:
             else:
                 contador += 0.5
     return cartas
+
+
+print(siete_y_medio())
 
 
 def perteneceACadaUno(l, e):
