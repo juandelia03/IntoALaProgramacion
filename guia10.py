@@ -1,4 +1,5 @@
 from queue import LifoQueue as Pila
+from queue import Queue as Cola
 from random import sample
 
 ejemplo_pila = Pila()
@@ -211,7 +212,83 @@ def estaBienBalanceada(s: str):
 
 
 # Parte 3 colas
+ejemplo_cola = Cola()
+for i in range(15):
+    ejemplo_cola.put(i)
 
+
+def generarNrosAlAzarCola(n: int, desde: int, hasta: int):
+    c = Cola()
+    numeros = generarNrosAlAzar(n, desde, hasta)
+    for numero in numeros:
+        c.put(numero)
+    return c.queue
+
+
+# print(generarNrosAlAzarCola(3, 4, 10))
+
+
+def cantidadElementosCola(cola: Cola):
+    res = 0
+    while not cola.empty():
+        cola.get()
+        res += 1
+    return res
+
+
+def buscarElMaximoCola(cola: Cola) -> int:
+    res: int = cola.get()
+    while not cola.empty():
+        tmp: int = cola.get()
+        if tmp > res:
+            res = tmp
+    return res
+
+
+# print(buscarElMaximoCola(ejemplo_cola))
+
+
+# ejercicio 16
+def armarSecuenciaDeBingo() -> Cola[int]:
+    cola = Cola()
+    secuencia = sample(list(range(100)), 100)
+    for n in secuencia:
+        cola.put(n)
+    return cola
+
+
+# no termino de entender si esta bien xq siempre da valores  muy altos
+# pero creo q es logico
+def jugarCartonDeBingo(carton: list[int], bolillero: Cola):
+    tiradas = 0
+    salio_nro = 0
+    while not bolillero.empty():
+        tiradas += 1
+        if bolillero.get() in carton:
+            salio_nro += 1
+        if salio_nro == 12:
+            return tiradas
+    return tiradas
+
+
+# print(jugarCartonDeBingo([1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 3, 5], armarSecuenciaDeBingo()))
+
+
+def nPacientesUrgentes(c: Cola[(int, str, str)]):
+    contador = 0
+    while not c.empty():
+        if c.get()[0] <= 3:
+            contador += 1
+    return contador
+
+
+# pacientes = Cola()
+# pacientes.put((1, "carlos", "..."))
+# pacientes.put((4, "carlos", "..."))
+# pacientes.put((3, "carlos", "..."))
+# pacientes.put((5, "carlos", "..."))
+
+# print(nPacientesUrgentes(pacientes))
 
 # Parte 4 diccionarios
 
@@ -291,4 +368,4 @@ def laPalabraMasFrecuente(archivo: str) -> str:
     return palabras_con_long[key]
 
 
-print(laPalabraMasFrecuente("ejemplo.txt"))
+# print(laPalabraMasFrecuente("ejemplo.txt"))
