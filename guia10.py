@@ -262,16 +262,23 @@ def armarSecuenciaDeBingo() -> Cola[int]:
 def jugarCartonDeBingo(carton: list[int], bolillero: Cola):
     tiradas = 0
     salio_nro = 0
+    print(bolillero.queue)
     while not bolillero.empty():
         tiradas += 1
-        if bolillero.get() in carton:
+        tmp = bolillero.get()
+        if tmp in carton:
             salio_nro += 1
+            print(tmp)
         if salio_nro == 12:
             return tiradas
     return tiradas
 
 
-# print(jugarCartonDeBingo([1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 3, 5], armarSecuenciaDeBingo()))
+# print(
+#     jugarCartonDeBingo(
+#         [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 3, 5], armarSecuenciaDeBingo()
+#     )
+# )
 
 
 def nPacientesUrgentes(c: Cola[(int, str, str)]):
@@ -354,18 +361,25 @@ def laPalabraMasFrecuente(archivo: str) -> str:
     f = open(archivo, "r")
     lineas = f.readlines()
     palabras = []
-    palabras_con_long = {}
+    palabras_por_repeticion = {}
     maximo = 0
+    resultado = ""
     for linea in lineas:
         palabras += linea.split(" ")
     for i in range(len(palabras)):
         palabras[i] = palabras[i].replace("\n", "")
+
     for palabra in palabras:
-        palabras_con_long[len(palabra)] = palabra
-    for key in palabras_con_long:
-        if key > maximo:
-            maximo = key
-    return palabras_con_long[key]
+        if palabra in palabras_por_repeticion:
+            palabras_por_repeticion[palabra] += 1
+        else:
+            palabras_por_repeticion[palabra] = 1
+
+    for key in palabras_por_repeticion:
+        if palabras_por_repeticion[key] > maximo:
+            maximo = palabras_por_repeticion[key]
+            resultado = key
+    return resultado
 
 
-# print(laPalabraMasFrecuente("ejemplo.txt"))
+print(laPalabraMasFrecuente("ejemplo.txt"))
