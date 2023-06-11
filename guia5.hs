@@ -229,3 +229,30 @@ aplanarConBlancosAux (x:xs) ys = (reverso ((' '):(reverso (x))))++ys ++ (aplanar
 
 aplanarConBlancos xs = sinUltimo (aplanarConBlancosAux xs [])
 
+-- falta sacarle los n blancos del principio
+aplanarConNBlancosAux :: [[Char]] -> Integer -> [Char]
+aplanarConNBlancosAux [] n = []
+aplanarConNBlancosAux (x:xs) n = (agregarNBlancosAdelante (x) n) ++ aplanarConNBlancosAux xs n
+
+
+agregarNBlancosAdelante :: [Char] -> Integer -> [Char]
+agregarNBlancosAdelante p 0 = p
+agregarNBlancosAdelante p n = ' ' : agregarNBlancosAdelante p (n-1)
+
+
+sumaAcumulada :: (Num t) => [t] -> [t] 
+sumaAcumulada (x:xs) = sumaAcumuladaAux (x:xs) x
+
+sumaAcumuladaAux [] i = []
+sumaAcumuladaAux (x:xs) i = i : sumaAcumuladaAux xs (i+(head xs)) 
+
+agregarATodos :: Integer -> [[Integer]] -> [[Integer]]
+agregarATodos n [] = []
+agregarATodos n (x:xs) = (n:x): agregarATodos n xs
+
+
+partes :: Integer -> [[Integer]]
+partes 0 = [[]]
+partes x = partes (x-1) ++ agregarATodos x (partes (x-1))
+
+
